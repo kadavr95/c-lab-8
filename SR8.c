@@ -32,7 +32,7 @@ int main(void) {
  }
  ch=toBASE(t,&z);
  if (ch==0)
-  printf("Result: %ld\n", z);
+  printf("Z: %ld\n", z);
  else
  printf("Result:ERROR: Limits overflow\n");
  fflush(stdin);
