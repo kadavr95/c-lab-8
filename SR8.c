@@ -10,7 +10,7 @@ long int multiply(long int x,long int y,long int *z);
 long int power(long int x,long int y,long int *z);
 
 int main(void) {
- long int x, y,z=0;
+ long int x, y,z=0,r=0,u,uu=0;
  int ch=0;
  char op;
  printf("Enter expression: ");
@@ -36,6 +36,19 @@ int main(void) {
   printf("Z: %ld\n", z);
  else
  printf("Result:ERROR: Limits overflow\n");
+ z=0;
+ ch=1;
+ //r=sum(sum(power(y,3,&z),-(power(sum(y,-x,&z),2,&z)),&z),x,&z) ;
+ ch*=sum(y,-x,&z);
+ u=z;
+ ch*=power(u,2,&z);
+ u=z;
+ ch*=power(y,3,&uu);
+ ch*=sum(uu,(-u),&z);
+ //ch*=(power(y,3,&z),(-(u)),&z);
+ u=z;
+ ch*=sum(u,x,&z);
+ printf("Result: %ld\n", z);
  fflush(stdin);
  getchar();
  return 0;
