@@ -5,33 +5,34 @@
 
 long int BASEto10(long int a);
 long int toBASE(long int a10,long int *z);
+long int sum(long int x,long int y,long int *z);
+long int multiply(long int x,long int y,long int *z);
+long int power(long int x,long int y,long int *z);
 
 int main(void) {
- long int x, y,z=0,t;
+ long int x, y,z=0;
  int ch=0;
  char op;
  printf("Enter expression: ");
  scanf("%ld%c%ld", &x,&op,&y);
- x=BASEto10(x);
- y=BASEto10(y);
  if (op=='+')
  {
-   t=x+y;
+   ch=sum(x,y,&z);
  }
  if (op=='-')
  {
-   t=x-y;
+   y*=-1;
+   ch=sum(x,y,&z);
  }
  if (op=='*')
  {
-   t=x*y;
+   ch=multiply(x,y,&z);
  }
  if (op=='^')
  {
-   t=pow(x,y);
+   ch=power(x,y,&z);
  }
- ch=toBASE(t,&z);
- if (ch==0)
+ if (ch==1)
   printf("Z: %ld\n", z);
  else
  printf("Result:ERROR: Limits overflow\n");
@@ -61,8 +62,89 @@ long int toBASE(long int a10,long int *z)
   k *= 10;
   a10 /= BASE;
  }
- return 0;
+ return 1;
  }
  else
- return 1;
+ return 0;
+}
+long int sum(long int x,long int y,long int *z)
+{
+int t1=1,t2=1;
+long int w,v;
+  x=BASEto10(x);
+  y=BASEto10(y);
+  if (y>0)
+  {
+   if ((LONG_MAX-y)>x)
+   {
+	 w=x+y;
+   }
+   else
+	 t1=0;
+  }
+  else
+  if ((LONG_MIN-y)<x)
+   {
+	 w=x+y;
+   }
+   else
+	 t1=0;
+  v=*z;
+  t2=toBASE(w,&v);
+  *z=v;
+  return t1*t2;
+}
+long int multiply(long int x,long int y,long int *z)
+{
+int t1=1,t2=1;
+long int w,v;
+  x=BASEto10(x);
+  y=BASEto10(y);
+  if (((y>0)&&(x>0))||((y<0)&&(x<0)))
+  {
+   if ((LONG_MAX/y)>x)
+   {
+	 w=x*y;
+   }
+   else
+	 t1=0;
+  }
+  else
+  if ((LONG_MIN/y)<x)
+   {
+	 w=x*y;
+   }
+   else
+	 t1=0;
+  v=*z;
+  t2=toBASE(w,&v);
+  *z=v;
+  return t1*t2;
+}
+long int power(long int x,long int y,long int *z)
+{
+int t1=1,t2=1;
+long int w,v;
+  x=BASEto10(x);
+  y=BASEto10(y);
+  if ((x<0) &&(y%2==1))
+  {
+   if ((-pow(LONG_MAX,1.0/y)<x))
+   {
+	 w=pow(x,y);
+   }
+   else
+	 t1=0;
+  }
+  else
+  if (pow(LONG_MAX,1.0/y)>x)
+   {
+	 w=pow(x,y);
+   }
+   else
+	 t1=0;
+  v=*z;
+  t2=toBASE(w,&v);
+  *z=v;
+  return t1*t2;
 }
